@@ -111,3 +111,101 @@ This diagram illustrates the step-by-step process of mapping an ERD to a databas
 The process of moving from an ERD to a physical database design requires careful consideration of entity types, relationships, and design principles. By following these steps, database designers can create efficient schemas that minimize data redundancy and null values while accurately representing the required data structures and relationships.
 
 [Note: Further details on each mapping step can be added as you provide more specific information about the mapping rules and techniques.]
+
+
+
+
+## 6. Physical Design: Mapping ERD to Schema
+
+### Mapping Process Steps
+
+#### Step 0: Identify Special Relationships
+Before the main mapping steps, identify one-to-one binary relationships with total participation. These will be mapped first.
+
+#### Step 1: Mapping Regular Strong Entities
+Convert primary entities from the ERD into database tables.
+
+Example:
+- Strong Entity: Customer
+- Attributes: Customer ID (Primary Key), Customer Name, Address
+- Resulting Relation: CUSTOMER(CustomerID, CustomerName, Address)
+
+##### Handling Different Attribute Types:
+1. Simple Attributes: Mapped directly to columns.
+2. Composite Attributes: Each component becomes a separate column.
+   Example: Address (Street, City, State, ZIP)
+3. Multivalued Attributes: Create a separate relation with a foreign key.
+   Example: Employee Skills
+
+#### Step 2: Mapping Weak Entities
+Transform weak entities, considering their dependency on strong entities.
+
+#### Steps 3, 4, 5: Mapping Binary Relationships
+
+##### One-to-One Relationships (3 scenarios):
+1. Total participation on both sides (Step 0)
+2. Total participation on one side, optional on the other
+3. Optional participation on both sides
+
+##### One-to-Many Relationships (2 scenarios):
+Focus on the "many" side, which can be:
+1. Mandatory (total participation)
+2. Optional (partial participation)
+
+##### Many-to-Many Relationships:
+Only one scenario, typically requiring a junction table.
+
+#### Step 6: Mapping Ternary Relationships
+Handle relationships involving three entities.
+
+#### Step 7: Mapping Unary Relationships
+Address relationships where an entity is related to itself.
+
+### Visual Representation of Relationship Types
+
+```mermaid
+graph TD
+    A[Binary Relationships] --> B[One-to-One]
+    A --> C[One-to-Many]
+    A --> D[Many-to-Many]
+    
+    B --> E[Total Participation Both Sides]
+    B --> F[Total One Side, Optional Other]
+    B --> G[Optional Both Sides]
+    
+    C --> H[Mandatory Many Side]
+    C --> I[Optional Many Side]
+    
+    J[Other Relationships] --> K[Ternary Relationships]
+    J --> L[Unary Relationships]
+```
+
+This diagram illustrates the different types of relationships and their scenarios in the mapping process.
+
+### Example: Mapping a Strong Entity with Various Attribute Types
+
+```mermaid
+erDiagram
+    EMPLOYEE {
+        int EmployeeID PK
+        string Name
+        string Street
+        string City
+        string State
+        string ZIP
+    }
+    EMPLOYEE_SKILLS {
+        int EmployeeID FK
+        string Skill
+    }
+    EMPLOYEE ||--o{ EMPLOYEE_SKILLS : has
+
+```
+
+This diagram shows how a strong entity (Employee) with a composite attribute (Address) and a multivalued attribute (Skills) is mapped to relations.
+
+## Conclusion
+
+The process of mapping an ERD to a database schema involves careful consideration of entity types, relationship cardinalities, and attribute characteristics. By following these steps and understanding the different scenarios for each type of relationship, database designers can create efficient and accurate schemas that properly represent the data model.
+
+[Note: Further examples and specific mapping rules can be added for each step as needed.]
