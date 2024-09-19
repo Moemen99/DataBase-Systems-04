@@ -209,3 +209,105 @@ This diagram shows how a strong entity (Employee) with a composite attribute (Ad
 The process of mapping an ERD to a database schema involves careful consideration of entity types, relationship cardinalities, and attribute characteristics. By following these steps and understanding the different scenarios for each type of relationship, database designers can create efficient and accurate schemas that properly represent the data model.
 
 [Note: Further examples and specific mapping rules can be added for each step as needed.]
+
+
+
+
+
+# Entity, Attribute, and Relationship Mapping to Database Tables
+
+## 1. Mapping Strong Entities
+
+When mapping a strong entity to a database table:
+
+- Create a table for the entity
+- Map attributes to columns based on their type:
+  - **Simple attributes**: Become individual columns
+  - **Composite attributes**: Each component becomes a separate column
+  - **Derived attributes**: Typically not stored in the database
+  - **Multi-valued attributes**: Require a separate table (see section 2)
+
+## 2. Handling Multi-valued Attributes
+
+For multi-valued attributes:
+
+1. Create a separate table for the multi-valued attribute
+2. Include the primary key of the main entity as a foreign key
+3. Create a composite primary key consisting of:
+   a) The foreign key from the main entity
+   b) The multi-valued attribute itself
+
+### Example: Employee Skills
+
+```sql
+-- Main table
+CREATE TABLE Employee (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    age INT
+);
+
+-- Multi-valued attribute table
+CREATE TABLE Employee_Skills (
+    employee_id INT,
+    skill VARCHAR(50),
+    PRIMARY KEY (employee_id, skill),
+    FOREIGN KEY (employee_id) REFERENCES Employee(id)
+);
+```
+
+## 3. Complex Attributes (Composite and Multi-valued)
+
+For attributes that are both composite and multi-valued:
+
+1. Create a separate table
+2. Include components of the composite attribute as columns
+3. Include the primary key of the main entity as a foreign key
+4. Create a composite primary key consisting of:
+   a) The foreign key from the main entity
+   b) One or more components of the complex attribute
+
+### Example: Employee Addresses
+
+```sql
+-- Main table
+CREATE TABLE Employee (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    age INT
+);
+
+-- Complex attribute table
+CREATE TABLE Employee_Addresses (
+    emp_id INT,
+    city VARCHAR(50),
+    country VARCHAR(50),
+    PRIMARY KEY (emp_id, city),
+    FOREIGN KEY (emp_id) REFERENCES Employee(id)
+);
+```
+
+## 4. Composite Primary Key Cases
+
+So far, we've encountered two cases where composite primary keys are used:
+
+1. Mapping multi-valued attributes
+2. Mapping complex attributes that are both composite and multi-valued
+
+Additional cases involving composite primary keys will be encountered when mapping certain types of relationships.
+
+## 5. Benefits of This Approach
+
+- Maintains data integrity
+- Avoids redundancy
+- Properly represents the structure of the original entity and its attributes in the relational database schema
+
+## 6. Next Steps
+
+In subsequent stages of database design, we will explore:
+
+- Mapping different types of relationships (one-to-one, one-to-many, many-to-many)
+- Handling weak entities
+- Additional scenarios requiring composite primary keys
+
+Remember, the process of moving from an Entity-Relationship Diagram (ERD) to a physical database design requires careful consideration of entity types, relationships, and design principles to create an efficient and accurate database schema.
