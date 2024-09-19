@@ -239,22 +239,29 @@ For multi-valued attributes:
 
 ### Example: Employee Skills
 
-```sql
--- Main table
-CREATE TABLE Employee (
-    id INT PRIMARY KEY,
-    name VARCHAR(100),
-    age INT
-);
+erDiagram
+    Employee ||--o{ Employee_Skills : has
+    Employee {
+        int id PK
+        string name
+        int age
+    }
+    Employee_Skills {
+        int employee_id FK
+        string skill
+    }
 
--- Multi-valued attribute table
-CREATE TABLE Employee_Skills (
-    employee_id INT,
-    skill VARCHAR(50),
-    PRIMARY KEY (employee_id, skill),
-    FOREIGN KEY (employee_id) REFERENCES Employee(id)
-);
-```
+classDiagram
+    class Employee {
+        +int id PK
+        string name
+        int age
+    }
+    class Employee_Skills {
+        +int employee_id FK
+        +string skill
+    }
+    Employee "1" -- "*" Employee_Skills : has
 
 ## 3. Complex Attributes (Composite and Multi-valued)
 
@@ -269,23 +276,31 @@ For attributes that are both composite and multi-valued:
 
 ### Example: Employee Addresses
 
-```sql
--- Main table
-CREATE TABLE Employee (
-    id INT PRIMARY KEY,
-    name VARCHAR(100),
-    age INT
-);
+erDiagram
+    Employee ||--o{ Employee_Addresses : has
+    Employee {
+        int id PK
+        string name
+        int age
+    }
+    Employee_Addresses {
+        int emp_id FK
+        string city
+        string country
+    }
 
--- Complex attribute table
-CREATE TABLE Employee_Addresses (
-    emp_id INT,
-    city VARCHAR(50),
-    country VARCHAR(50),
-    PRIMARY KEY (emp_id, city),
-    FOREIGN KEY (emp_id) REFERENCES Employee(id)
-);
-```
+classDiagram
+    class Employee {
+        +int id PK
+        string name
+        int age
+    }
+    class Employee_Addresses {
+        +int emp_id FK
+        +string city
+        string country
+    }
+    Employee "1" -- "*" Employee_Addresses : has
 
 ## 4. Composite Primary Key Cases
 
