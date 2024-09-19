@@ -341,3 +341,69 @@ In subsequent stages of database design, we will explore:
 - Additional scenarios requiring composite primary keys
 
 Remember, the process of moving from an Entity-Relationship Diagram (ERD) to a physical database design requires careful consideration of entity types, relationships, and design principles to create an efficient and accurate database schema.
+
+
+
+
+## 7. Mapping Weak Entities
+
+Weak entities are entities that cannot be uniquely identified by their own attributes alone. They depend on the existence of another entity, known as the owner or identifying entity. When mapping weak entities to database tables, we follow these steps:
+
+1. Create a separate table for the weak entity
+2. Include all attributes of the weak entity
+3. Include the primary key of the owner entity as a foreign key
+4. Create a composite primary key consisting of:
+   a) The foreign key from the owner entity
+   b) The partial key of the weak entity
+
+### Example: Employee (Strong Entity) and Dependent (Weak Entity)
+
+```mermaid
+erDiagram
+    Employee ||--o{ Dependent : has
+    Employee {
+        int id PK
+        string name
+    }
+    Dependent {
+        int emp_id FK
+        string name
+        date date_of_birth
+        string gender
+    }
+```
+
+Table representation:
+
+```mermaid
+classDiagram
+    class Employee {
+        +int id PK
+        string name
+    }
+    class Dependent {
+        +int emp_id FK
+        +string name
+        date date_of_birth
+        string gender
+    }
+    Employee "1" -- "*" Dependent : has
+```
+
+In this example:
+- Employee is the strong (owner) entity
+- Dependent is the weak entity
+- The composite primary key of the Dependent table is (emp_id, name)
+
+This is our third case of using a composite primary key, specifically for mapping weak entities.
+
+## Composite Primary Key Cases (Updated)
+
+We've now encountered three cases where composite primary keys are used:
+
+1. Mapping multi-valued attributes
+2. Mapping complex attributes that are both composite and multi-valued
+3. Mapping weak entities
+
+Each of these cases helps maintain the integrity and accuracy of our database schema, ensuring that we can uniquely identify all entities and their relationships.
+
