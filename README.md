@@ -239,6 +239,7 @@ For multi-valued attributes:
 
 ### Example: Employee Skills
 
+```mermaid
 erDiagram
     Employee ||--o{ Employee_Skills : has
     Employee {
@@ -250,7 +251,11 @@ erDiagram
         int employee_id FK
         string skill
     }
+```
 
+Table representation:
+
+```mermaid
 classDiagram
     class Employee {
         +int id PK
@@ -262,6 +267,9 @@ classDiagram
         +string skill
     }
     Employee "1" -- "*" Employee_Skills : has
+```
+
+
 
 ## 3. Complex Attributes (Composite and Multi-valued)
 
@@ -276,6 +284,8 @@ For attributes that are both composite and multi-valued:
 
 ### Example: Employee Addresses
 
+
+```mermaid
 erDiagram
     Employee ||--o{ Employee_Addresses : has
     Employee {
@@ -288,7 +298,11 @@ erDiagram
         string city
         string country
     }
+```
 
+Table representation:
+
+```mermaid
 classDiagram
     class Employee {
         +int id PK
@@ -301,6 +315,7 @@ classDiagram
         string country
     }
     Employee "1" -- "*" Employee_Addresses : has
+```
 
 ## 4. Composite Primary Key Cases
 
